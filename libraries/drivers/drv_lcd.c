@@ -245,7 +245,7 @@ void turn_on_lcd_backlight(void)
 #else
 void turn_on_lcd_backlight(void)
 {
-    
+
 }
 #endif
 
@@ -351,7 +351,7 @@ INIT_DEVICE_EXPORT(drv_lcd_hw_init);
 #ifndef ART_PI_TouchGFX_LIB
 #ifdef DRV_DEBUG
 #ifdef FINSH_USING_MSH
-int lcd_test()
+int lcd_test(void)
 {
     struct drv_lcd_device *lcd;
     lcd = (struct drv_lcd_device *)rt_device_find("lcd");
@@ -415,9 +415,6 @@ int lcd_test()
         lcd->parent.control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
         rt_thread_mdelay(1000);
     }
-
-
-
 }
 MSH_CMD_EXPORT(lcd_test, lcd_test);
 #endif /* FINSH_USING_MSH */
