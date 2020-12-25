@@ -198,9 +198,22 @@ static rt_size_t rt_dcmi_write(rt_device_t dev, rt_off_t pos, const void *buffer
     return RT_EOK;
 }
 
+const static struct rt_device_ops _dcmi_ops = {
+    rt_dcmi_init,
+    rt_dcmi_open,
+    rt_dcmi_close,
+    rt_dcmi_read,
+    rt_dcmi_write,
+    rt_dcmi_control
+};
+
 int dcmi_init(void)
 {
     rt_dcmi.dev.parent.type      = RT_Device_Class_Miscellaneous;
+
+#ifdef RT_USING_DEVICE_OPS
+    rt_dcmi.dev.parent.ops = &_dcmi_ops;
+#else
     rt_dcmi.dev.parent.init      = rt_dcmi_init;
     rt_dcmi.dev.parent.open      = rt_dcmi_open;
     rt_dcmi.dev.parent.close     = rt_dcmi_close;
@@ -208,6 +221,7 @@ int dcmi_init(void)
     rt_dcmi.dev.parent.write     = rt_dcmi_write;
     rt_dcmi.dev.parent.control   = rt_dcmi_control;
     rt_dcmi.dev.parent.user_data = RT_NULL;
+#endif
 
     rt_device_register(&rt_dcmi.dev.parent, "dcmi", RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_REMOVABLE | RT_DEVICE_FLAG_STANDALONE);
 
