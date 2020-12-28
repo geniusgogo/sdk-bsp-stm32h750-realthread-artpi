@@ -37,7 +37,7 @@ static void rt_hw_dcmi_dma_init(void)
     hdma_dcmi.Init.PeriphInc           = DMA_PINC_DISABLE;
     hdma_dcmi.Init.MemInc              = DMA_MINC_ENABLE;
     hdma_dcmi.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-    hdma_dcmi.Init.MemDataAlignment    = DMA_MDATAALIGN_WORD;
+    hdma_dcmi.Init.MemDataAlignment    = DMA_MDATAALIGN_HALFWORD;
     hdma_dcmi.Init.Mode                = DMA_CIRCULAR;
     hdma_dcmi.Init.Priority            = DMA_PRIORITY_HIGH;
     hdma_dcmi.Init.FIFOMode            = DMA_FIFOMODE_ENABLE;
@@ -49,13 +49,13 @@ static void rt_hw_dcmi_dma_init(void)
 
     __HAL_LINKDMA(&rt_dcmi.DCMI_Handle, DMA_Handle, hdma_dcmi);
 
-    HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 0x00, 0x00);
+    HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 0x02, 0x00);
     HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);;
 }
 
 void rt_hw_dcmi_dma_config(rt_uint32_t dst_addr1, rt_uint32_t dst_addr2, rt_uint32_t len)
 {
-      HAL_DMAEx_MultiBufferStart(&hdma_dcmi, (rt_uint32_t)&DCMI->DR, dst_addr1, dst_addr2, len);
+    HAL_DMAEx_MultiBufferStart(&hdma_dcmi, (rt_uint32_t)&DCMI->DR, dst_addr1, dst_addr2, len);
 
     __HAL_DMA_ENABLE_IT(&hdma_dcmi, DMA_IT_TC);
 }
@@ -71,7 +71,7 @@ static rt_err_t rt_hw_dcmi_init(DCMI_HandleTypeDef *device)
     device->Init.HSPolarity        = DCMI_HSPOLARITY_LOW;
     device->Init.CaptureRate       = DCMI_CR_ALL_FRAME;
     device->Init.ExtendedDataMode  = DCMI_EXTEND_DATA_8B;
-    device->Init.JPEGMode          = DCMI_JPEG_ENABLE;
+    device->Init.JPEGMode          = DCMI_JPEG_DISABLE;
     device->Init.ByteSelectMode    = DCMI_BSM_ALL;
     device->Init.ByteSelectStart   = DCMI_OEBS_ODD;
     device->Init.LineSelectMode    = DCMI_LSM_ALL;
@@ -120,20 +120,20 @@ void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi)
 {
     extern void camera_frame_data_process(void);
     /* enter interrupt */
-    rt_interrupt_enter();
+    // rt_interrupt_enter();
     /* move frame data to buffer */
     camera_frame_data_process();
     __HAL_DCMI_ENABLE_IT(&rt_dcmi.DCMI_Handle, DCMI_IT_FRAME);
 
     /* leave interrupt */
-    rt_interrupt_leave();
+    //rt_interrupt_leave();
 }
 
 void DMA2_Stream1_IRQHandler(void)
 {
     extern void camera_dma_data_process(void);
     /* enter interrupt */
-    rt_interrupt_enter();
+   //  rt_interrupt_enter();
 
     if (__HAL_DMA_GET_FLAG(&hdma_dcmi, DMA_FLAG_TCIF1_5) != RESET)
     {
@@ -144,7 +144,7 @@ void DMA2_Stream1_IRQHandler(void)
     }
 
     /* leave interrupt */
-    rt_interrupt_leave();
+   // rt_interrupt_leave();
 }
 
 static rt_err_t rt_dcmi_init(rt_device_t dev)
@@ -198,6 +198,7 @@ static rt_size_t rt_dcmi_write(rt_device_t dev, rt_off_t pos, const void *buffer
     return RT_EOK;
 }
 
+#ifdef RT_USING_DEVICE_OPS
 const static struct rt_device_ops _dcmi_ops = {
     rt_dcmi_init,
     rt_dcmi_open,
@@ -206,6 +207,7 @@ const static struct rt_device_ops _dcmi_ops = {
     rt_dcmi_write,
     rt_dcmi_control
 };
+#endif
 
 int dcmi_init(void)
 {
