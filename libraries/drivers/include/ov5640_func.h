@@ -19,6 +19,8 @@ void ov5640_jpeg_mode(struct rt_i2c_bus_device *i2c_bus);
 //OV5640切换为RGB565模式
 void ov5640_rgb565_mode(struct rt_i2c_bus_device *i2c_bus);
 
+void ov5640_sxga_init(struct rt_i2c_bus_device *i2c_bus);
+
 //初始化自动对焦
 //返回值:0,成功;1,失败.
 uint8_t ov5640_focus_init(struct rt_i2c_bus_device *i2c_bus);

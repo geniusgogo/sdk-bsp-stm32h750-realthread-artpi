@@ -75,7 +75,7 @@ static rt_err_t drv_lcd_control(struct rt_device *device, int cmd, void *args)
 
         RT_ASSERT(info != RT_NULL);
         info->pixel_format  = lcd->lcd_info.pixel_format;
-        info->bits_per_pixel = 16;
+        info->bits_per_pixel = LCD_BITS_PER_PIXEL;
         info->width         = lcd->lcd_info.width;
         info->height        = lcd->lcd_info.height;
         info->framebuffer   = lcd->lcd_info.framebuffer;
@@ -366,7 +366,8 @@ int lcd_test(void)
                 lcd->lcd_info.framebuffer[2 * i] = 0x00;
                 lcd->lcd_info.framebuffer[2 * i + 1] = 0xF8;
             }
-            lcd->parent.control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
+
+            rt_device_control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
             rt_thread_mdelay(1000);
             /* green */
             for (int i = 0; i < LCD_BUF_SIZE / 2; i++)
@@ -374,7 +375,7 @@ int lcd_test(void)
                 lcd->lcd_info.framebuffer[2 * i] = 0xE0;
                 lcd->lcd_info.framebuffer[2 * i + 1] = 0x07;
             }
-            lcd->parent.control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
+            rt_device_control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
             rt_thread_mdelay(1000);
             /* blue */
             for (int i = 0; i < LCD_BUF_SIZE / 2; i++)
@@ -392,7 +393,7 @@ int lcd_test(void)
                  lcd->lcd_info.framebuffer[3 * i + 1] = 0x00;
                  lcd->lcd_info.framebuffer[3 * i + 2] = 0xff;
              }
-             lcd->parent.control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
+             rt_device_control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
              rt_thread_mdelay(1000);
              /* green */
              for (int i = 0; i < LCD_BUF_SIZE / 3; i++)
@@ -401,7 +402,7 @@ int lcd_test(void)
                  lcd->lcd_info.framebuffer[3 * i + 1] = 0xff;
                  lcd->lcd_info.framebuffer[3 * i + 2] = 0x00;
              }
-             lcd->parent.control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
+             rt_device_control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
              rt_thread_mdelay(1000);
              /* blue */
              for (int i = 0; i < LCD_BUF_SIZE / 3; i++)
@@ -412,7 +413,7 @@ int lcd_test(void)
              }
          }
 
-        lcd->parent.control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
+        rt_device_control(&lcd->parent, RTGRAPHIC_CTRL_RECT_UPDATE, RT_NULL);
         rt_thread_mdelay(1000);
     }
 }

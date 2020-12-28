@@ -1,8 +1,10 @@
 #include <rtdevice.h>
+#include <rthw.h>
 #include "ov5640_func.h"
 #include "ov5640_regtable.h"
 
-#define OV5640_SCCB_SLAVE_ADDR 0x78
+// #define OV5640_SCCB_SLAVE_ADDR 0x78
+#define OV5640_SCCB_SLAVE_ADDR 0x3C
 
 static void _ov5640_sccb_write(struct rt_i2c_bus_device *i2c_bus, uint16_t reg, uint8_t val)
 {
@@ -103,7 +105,7 @@ void ov5640_flash_strobe(struct rt_i2c_bus_device *i2c_bus, uint8_t on)
 {
     uint8_t regv;
 
-    ov5640_sccb_read(i2c_bus, 0x3016u, &regv);
+    _ov5640_sccb_read(i2c_bus, 0x3016u, &regv);
     if (!(regv & 0x02))
     {
         regv |= 0X02;
@@ -154,6 +156,17 @@ void ov5640_rgb565_mode(struct rt_i2c_bus_device *i2c_bus)
     for (i = 0; i < sizeof(ov5640_rgb565_reg_tbl) / sizeof(ov5640_rgb565_reg_tbl[0]); i++)
     {
         _ov5640_sccb_write(i2c_bus, ov5640_rgb565_reg_tbl[i][0], ov5640_rgb565_reg_tbl[i][1]);
+    }
+}
+
+void ov5640_sxga_init(struct rt_i2c_bus_device *i2c_bus)
+{
+    int i;
+
+    //初始化 OV5640,采用SXGA分辨率(1600*1200)
+    for(i = 0; i < sizeof(ov5640_uxga_init_reg_tbl) / sizeof(ov5640_uxga_init_reg_tbl[0]); i++)
+    {
+         _ov5640_sccb_write(i2c_bus, ov5640_uxga_init_reg_tbl[i][0], ov5640_uxga_init_reg_tbl[i][1]);
     }
 }
 

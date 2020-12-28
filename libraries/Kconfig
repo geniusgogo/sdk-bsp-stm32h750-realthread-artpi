@@ -109,6 +109,13 @@ menu "Onboard Peripheral"
         select RT_USING_SAL
         default n
 
+    config BSP_USING_OV5640
+        bool "Enable camera (ov5640)"
+        select BSP_USING_DCMI
+        select BSP_USING_I2C
+        select BSP_USING_I2C2
+        default n
+
     config BSP_USING_OV2640
         bool "Enable camera (ov2640)"
         select BSP_USING_DCMI
