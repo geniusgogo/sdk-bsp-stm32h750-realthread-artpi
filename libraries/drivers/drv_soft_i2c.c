@@ -161,7 +161,7 @@ static const struct rt_i2c_bit_ops stm32_bit_ops_default =
     .get_scl  = stm32_get_scl,
     .udelay   = stm32_udelay,
     .delay_us = 1,
-    .timeout  = 100
+    .timeout  = 2
 };
 
 /**
