@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2015-2020, xieyangrun
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2020-12-29     xieyangrun   Change Copyright
+ */
+
 #include "board.h"
 #include <rtdevice.h>
 #include <drv_ov5640.h>
@@ -15,7 +25,7 @@
 #define OV5640_RST_PIN GET_PIN(A, 3)
 
 #define FRAME_SIZE (800 * 480 * 2)
-#define LINE_SIZE (800*2)
+#define LINE_SIZE (800 * 2)
 
 struct ov5640_dev_t
 {

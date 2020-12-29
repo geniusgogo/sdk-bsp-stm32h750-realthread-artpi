@@ -6,6 +6,7 @@
  * Change Logs:
  * Date           Author       Notes
  * 2019-01-08     zylx         first version
+ * 2020-12-29     xieyangrun   fixed bits_per_pixel
  */
 
 #include <board.h>

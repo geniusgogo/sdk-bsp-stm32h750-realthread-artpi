@@ -42,7 +42,7 @@ static void rt_hw_dcmi_dma_init(void)
     hdma_dcmi.Init.Priority            = DMA_PRIORITY_HIGH;
     hdma_dcmi.Init.FIFOMode            = DMA_FIFOMODE_ENABLE;
     hdma_dcmi.Init.FIFOThreshold       = DMA_FIFO_THRESHOLD_FULL;
-    hdma_dcmi.Init.MemBurst            = DMA_MBURST_SINGLE;
+    hdma_dcmi.Init.MemBurst            = DMA_MBURST_INC4;
     hdma_dcmi.Init.PeriphBurst         = DMA_PBURST_SINGLE;
 
     HAL_DMA_Init(&hdma_dcmi);

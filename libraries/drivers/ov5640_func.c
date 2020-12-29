@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2015-2020, xieyangrun
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2020-12-29     xieyangrun   Change Copyright
+ */
+
 #include <rtdevice.h>
 #include <rthw.h>
 #include "ov5640_func.h"
